@@ -36,4 +36,4 @@ client.on("message", async (msg) => {
 
 
 
-client.login("NDg5MDg2ODcyOTM3NTYyMTEz.XoXZ1w.1SVMgmACkLbugUuP9lrozRE-86g");
+client.login("token");
