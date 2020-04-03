@@ -3,27 +3,26 @@ const Client = require("./src/LevitateClient.js");
 
 const client = new Client({
    members: {
-    ignoreBots: true
-  },
+    ignoreBots: true, // Set this to true if your bot doesn't interact with other bots, doesn't use their information. Don't use this if you have a "server info" command or similar
+   },
    channels: {
-      ignoreVoice: true,
-      ignoreCategories: true,
+      ignoreVoice: true, // If your bot only uses text channels, it should ignore voice ones
+      ignoreCategories: true, // If you bot doesn't take advantage of the `channel.parent` property, keep this to true
    },
    messages: {
-      ignoreReactions: true,
-      excludeProps: ["mentions", "embeds", "pinnable"]
+      ignoreReactions: true, // Depends on the purpose of your bot. Leave this to true if your bot doesn't listen for reactions, doesn't get reactions from messages.
    },
    users: {
-      ignoreBots: true
+      ignoreBots: true, // Set this to true if your bot doesn't interact with other bots, doesn't use their information. Don't use this if you have a "server info" command or similar
    },
-   ignoreEmojis: true,
-   ignorePresences: true
+   ignoreEmojis: true, // Leave this to true if your bot doesn't use any custom emojis / doesn't have any custom emojis related statistics.
+   ignorePresences: true,
+   ignoreProps: ["afkChannelID", ".applicationID", "banner", "description", "embedChannelID", "embedEnabled", "memberCount", "features", "nameAcronym", "ownerID", "premiumSubscriptionCount", "systemChannelID", "vanityURLCode", "verificationLevel", "verified", "voice", "voiceStates", "widgetChannelID"]
 });
 
 client.on("ready", () => console.log("I am ready!", client.guilds.cache.first().channels.cache.size))
 
 client.on("message", async (msg) => {
-   console.log(msg.author.username);
    console.log("Users cache:", client.users.cache.size);
    console.log("Members cache:", msg.guild.members.cache.size);
    console.log("Guild Emojis cache:", msg.guild.emojis.cache.size);
@@ -35,4 +34,4 @@ client.on("message", async (msg) => {
 
 
 
-client.login("NDg5MDg2ODcyOTM3NTYyMTEz.Xobsfg.cntrZLCmobH6jdAkhNMepN2q5zw");
+client.login("NDg5MDg2ODcyOTM3NTYyMTEz.Xoc82w.LArZcLMfkdagMB0aZmHLw_TSmaE");
