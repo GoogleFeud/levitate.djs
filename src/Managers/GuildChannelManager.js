@@ -15,9 +15,6 @@ class GuildChannelManager extends BaseManager {
   add(channel) {
     const existing = this.cache.get(channel.id);
     if (existing) return existing;
-    if (this.client.levitateOptions.channels.ignoreVoice && channel.type === "voice") return channel;
-    if (this.client.levitateOptions.channels.ignoreCategories && channel.type === "category") return channel;
-    if (this.client.levitateOptions.channels.ignoreText && channel.type === "text") return channel;
     this.cache.set(channel.id, channel);
     return channel;
   }

@@ -10,7 +10,7 @@ class UserManager extends BaseManager {
   }
 
   add(data, cache, other) {
-    if (this.client.levitateOptions.users.ignoreBots && data && data.bot) return data;
+    if (this.client.levitateOptions.users.ignoreBots && data && data.bot && this.client.user.id !== data.id) return data;
     if (this.client.levitateOptions.users.ignoreIDs instanceof Array && data && this.client.levitateOptions.users.ignoreIDs.includes(data.id)) return data;
     return super.add(data, cache, other);
   }
