@@ -93,7 +93,7 @@ There will most likely be side effects. Some obvious side effects:
 - If `ignoreEmojis` is set to true, you won't be able to get any emoji objects from events or the caches.
 - If `ignoreText` is set to true, you won't receive any message events.
 
-There are a lot more. If you have a basic text chat bot, I suggesting using this configuration:
+There are a lot more. If you have a basic text chat bot, I suggest using this configuration:
 
 ```js
 const client = new Client({
