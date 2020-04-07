@@ -1,6 +1,6 @@
 {
   "name": "levitate.djs",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A module for `discord.js` which allows you to choose what gets cached and what not. It uses discord.js' structuring system + overriding some of the `managers`. This module is **experimental** and also **barely tested**. I'm sure there is a better way of doing this!",
   "main": "index.js",
   "dependencies": {
