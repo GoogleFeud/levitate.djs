@@ -8,7 +8,7 @@ const { ChannelTypes } = Constants;
 
 class GuildChannelManager extends BaseManager {
   constructor(guild, iterable) {
-    super(guild.client, iterable, GuildChannel);
+    super(guild.client, iterable, GuildChannel, guild.client.levitateOptions.channels.cacheType);
     this.guild = guild;
   }
 

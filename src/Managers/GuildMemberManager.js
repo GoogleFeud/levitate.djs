@@ -7,14 +7,15 @@ const {Error, TypeError} = require("discord.js/src/errors/index.js");
 
 class GuildMemberManager extends BaseManager {
   constructor(guild, iterable) {
-    super(guild.client, iterable, GuildMember);
+    super(guild.client, iterable, GuildMember,  guild.client.levitateOptions.members.cacheType);
     this.guild = guild;
   }
 
-  add(data, cache = (this.client.levitateOptions.members.cache !== false)) {
+  add(data, cache = true) {
     if (this.client.user.id !== data.user.id) {
-      if (this.client.levitateOptions.members.ignoreBots && data && data.user && data.user.bot) return;
-      if (this.client.levitateOptions.members.ignoreIDs instanceof Array && data && data.user && this.client.levitateOptions.members.ignoreIDs.includes(data.user.id)) return;
+      if (this.client.levitateOptions.members.cache === false) cache = false;
+      if (this.client.levitateOptions.members.ignoreBots && data && data.user && data.user.bot) cache = false;
+      if (this.client.levitateOptions.members.ignoreIDs instanceof Array && data && data.user && this.client.levitateOptions.members.ignoreIDs.includes(data.user.id)) cache = false;
     }
     return super.add(data, cache, { id: data.user.id, extras: [this.guild] });
   }
