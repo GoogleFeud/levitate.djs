@@ -94,7 +94,7 @@ const client = new Client({
 });
 ```
 
-`limit` is how many pairs the collection can hold. If `id` is provided, the specified ID will never get deleted from the collection to make space for other objects. This was mainly to never uncache the bot itself. 
+`limit` is how many pairs the collection can hold. If `id` is provided, the specified ID will never get deleted from the collection to make space for other objects. This was mainly added to never uncache the bot itself. 
 
 **Suggestion:** You can use `cacheType: Client.LimitedCollection.generate(2, 'yourBotId')` in the `members` option. That will cache only your bot and one extra member. This means that `message.member` will always be accessible
 
