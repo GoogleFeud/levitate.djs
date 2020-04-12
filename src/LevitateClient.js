@@ -51,8 +51,11 @@ class LevitateClient extends discord.Client {
             let message;
             if (data.guild_id) {
                 const guild = this.guilds.cache.get(data.guild_id);
+                channel = this.guilds.cache.get(data.channel_id);
+                if (!channel) {
                 let Channel = discord.Structures.get("TextChannel");
                 channel = new Channel(guild, {id: data.channel_id, type: 0});
+                }
                 message = channel.messages.add(data);
                 message.mentions = Util.messageMentions(message, {
                     users: data.mentions,
