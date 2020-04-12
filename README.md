@@ -99,9 +99,9 @@ const client = new Client({
 
 `limit` is how many pairs the collection can hold. If `id` is provided, the specified ID will never get deleted from the collection to make space for other objects. This was mainly added to never uncache the bot itself. 
 
-## Message#rawMentions
+## Message#mentions
 
-If you aren't caching any users/members/channels then it's likely that `message.mentions.users/members/channels` will be empty. Levitate.djs adds a `rawMentions` object which looks like this:
+If you aren't caching any users/members/channels then it's likely that `message.mentions.users/members/channels` will be empty. Levitate.djs replaces the `mentions` object with a new one which looks like this:
 
 ```
 {

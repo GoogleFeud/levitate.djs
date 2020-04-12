@@ -33,7 +33,7 @@ client.on("message", async (msg) => {
       console.log("Guild presences cache:", msg.guild.presences.cache.size);
       console.log("Permission check:", msg.member.roles.cache.has("527789717152989186"))
       }
-      console.log(msg.rawMentions);
+      console.log(msg.mentions);
       msg.channel.send("TEST!");
 });
 

@@ -54,7 +54,7 @@ class LevitateClient extends discord.Client {
                 let Channel = discord.Structures.get("TextChannel");
                 channel = new Channel(guild, {id: data.channel_id, type: 0});
                 message = channel.messages.add(data);
-                message.rawMentions = Util.messageMentions(message, {
+                message.mentions = Util.messageMentions(message, {
                     users: data.mentions,
                     roles: data.mention_roles,
                     everyone: data.mention_everyone,
@@ -82,7 +82,7 @@ class LevitateClient extends discord.Client {
             const DMChannel = discord.Structures.get("DMChannel");
             channel = new DMChannel(this, {recipients: [user], id: data.channel_id, type: 1});
             message = channel.messages.add(data);
-            message.rawMentions = Util.messageMentions(message, {
+            message.mentions = Util.messageMentions(message, {
                 users: data.mentions,
                 roles: data.mention_roles,
                 everyone: data.mention_everyone,
