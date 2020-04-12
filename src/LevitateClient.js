@@ -21,6 +21,11 @@ class LevitateClient extends discord.Client {
             if (data.guild_id) {
                 channel = new discord.TextChannel(this.guilds.cache.get(data.guild_id), {id: data.channel_id, type: 0});
                 message = channel.messages.add(data);
+                message.rawMentions = {
+                    users: data.mentions,
+                    roles: data.mention_roles,
+                    everyone: data.mention_everyone
+                }
                 const user = message.author;
                 const member = message.member;
                 channel.lastMessageID = data.id;
@@ -38,11 +43,17 @@ class LevitateClient extends discord.Client {
             const user = this.users.cache.get(data.author.id) || await this.users.fetch(data.author.id);
             channel = new discord.DMChannel(this, {recipients: [user], id: data.channel_id, type: 1});
             message = channel.messages.add(data);
+            message.rawMentions = {
+                users: data.mentions,
+                roles: data.mention_roles,
+                everyone: data.mention_everyone
+            }
         }
       client.emit("message", message);
       return { message };
     });
     } 
+
 }
 
 LevitateClient.LimitedCollection = require("./Util/LimitedCollection.js");

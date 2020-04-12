@@ -28,7 +28,7 @@ class ChannelManager extends BaseManager {
       return null;
     }
     
-    if ((this.client.levitateOptions.channels.ignoreVoice && channel.type === "voice") || (this.client.levitateOptions.channels.ignoreCategories && channel.type === "category") || (this.client.levitateOptions.channels.ignoreCategories && channel.type === "text") ) {
+    if ((this.client.levitateOptions.channels.ignoreVoice && channel.type === "voice") || (this.client.levitateOptions.channels.ignoreCategories && channel.type === "category") || (this.client.levitateOptions.channels.ignoreText && channel.type === "text") ) {
         guild.channels.cache.delete(channel.id);
         return channel;
     }
