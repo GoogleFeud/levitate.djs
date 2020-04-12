@@ -13,7 +13,8 @@ class LevitateClient extends discord.Client {
         if (options.channels) this.channels = new ChannelManager(this);
         if (options.users) this.users = new UserManager(this);
 
-        if (options.channels.ignoreText) Util.setAction(this, "MessageCreate", async (data) => {
+        if (options.channels && options.channels.ignoreText) {
+            Util.setAction(this, "MessageCreate", async (data) => {
             if (options.members.ignoreBots && data.author.bot) return { data };
             const client = this;
             let channel;
@@ -52,6 +53,7 @@ class LevitateClient extends discord.Client {
       client.emit("message", message);
       return { message };
     });
+}
     } 
 
 }

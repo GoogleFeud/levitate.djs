@@ -16,9 +16,7 @@ const client = new Client({
 client.on("ready", () => console.log("I am ready!", client.guilds.cache.first().channels.cache.size))
 
 client.on("message", async (msg) => {
-   console.log(msg.rawMentions);
-   if (msg.guild) {
-      console.log(msg.guild.members.cache.map(m => m.user.username));
+   msg.channel.send("TET")
       console.log("Users cache:", client.users.cache.size);
       console.log("Members cache:", msg.guild.members.cache.size);
       console.log("Guild Emojis cache:", msg.guild.emojis.cache.size);
@@ -26,11 +24,6 @@ client.on("message", async (msg) => {
       console.log("Channels cache", client.channels.cache.size);
       console.log("Guild Channels cache:", msg.guild.channels.cache.size);
       console.log("Guild presences cache:", msg.guild.presences.cache.size)
-   }
-   if (msg.content.startsWith("?sp")) {
-       const channel = msg.mentions.channels.first();
-       console.log(channel, 1);
-   }
 });
 
 

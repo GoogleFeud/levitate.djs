@@ -10,13 +10,10 @@ class ChannelManager extends BaseManager {
   }
 
 
-  add(data, guild, cache = (this.client.levitateOptions.channels.cache !== false)) {
+  add(data, guild, cache = true) {
     const existing = this.cache.get(data.id);
     if (existing) {
       if (existing._patch && cache) existing._patch(data);
-      if (this.client.levitateOptions.channels.ignoreVoice && existing.type === "voice") return existing;
-      if (this.client.levitateOptions.channels.ignoreCategories && existing.type === "category") return existing;
-      if (this.client.levitateOptions.channels.ignoreText && existing.type === "text") return existing;
       if (guild) guild.channels.add(existing);
       return existing;
     }
@@ -27,11 +24,13 @@ class ChannelManager extends BaseManager {
       this.client.emit(Events.DEBUG, `Failed to find guild, or unknown type for channel ${data.id} ${data.type}`);
       return null;
     }
-    
-    if ((this.client.levitateOptions.channels.ignoreVoice && channel.type === "voice") || (this.client.levitateOptions.channels.ignoreCategories && channel.type === "category") || (this.client.levitateOptions.channels.ignoreText && channel.type === "text") ) {
-        guild.channels.cache.delete(channel.id);
-        return channel;
+
+    if ( (this.client.levitateOptions.channels.ignoreVoice && channel.type === "voice") || (this.client.levitateOptions.channels.ignoreCategories && channel.type === "category") || (this.client.levitateOptions.channels.ignoreText && channel.type === "text") ) {
+      guild.channels.cache.delete(channel.id);
+      return null;
     }
+
+    if (cache) this.cache.set(channel.id, channel);
 
     return channel;
   }
