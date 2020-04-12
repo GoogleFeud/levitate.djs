@@ -44,15 +44,18 @@ Extends `Discord.Client`.
 | options.members.cacheType |  `Class that extends Collection` | A class that extends the discord.js `Collection` class. | 
 | options.channels |  `Object` | Options regarding channels |
 | options.channels.ignoreVoice |  `Boolean` | If voice channels should be cached |
-| options.channels.ignoreText |  `Boolean` | If text channels should be cached. **Messages will STILL be received, but the channel object will be semi-partial, containing only id and type. You can still use all the channel methods** |
+| options.channels.ignoreText |  `Boolean` | If text channels should be cached. **Messages will STILL be received, but the channel object will be semi-partial, containing only id and type. You can still use most channel methods** |
 | options.channels.ignoreCategories |  `Boolean` | If categories should be cached |
 | options.channels.cacheType |  `Class that extends Collection` | A class that extends the discord.js `Collection` class. | 
+| options.channels.cache |  `Boolean` | If any channels should be cached |
 | options.users |  `Object` | Options regarding discord users |
 | options.users.ignoreBots |  `Boolean` | If bots should be cached **Events caused by bots will NOT be received** |
 | options.users.ignoreIDs |  `Boolean` | If the bot should cache the specified IDs in the array. **Events from users will still be received** |
 | options.users.cacheType |  `Class that extends Collection` | A class that extends the discord.js `Collection` class. | 
+| options.users.cache |  `Boolean` | If users should get cached at all |
 | options.ignoreEmojis |  `Boolean` | If emojis should be cached in `client.emojis` and `guild.emojis` |
 | options.ignorePresences |  `Boolean` | If presences should be cached |
+| options.ignoreReactions |  `Boolean` | If reactions should be cached + events from reactions should be received |
 | options.excludeProps |  `Array<String>` |  An array of property keys. These properties will be deleted from every guild. |
 | djsOptions | `Object` | Any options for discord.js |
 
@@ -61,21 +64,21 @@ Creating a client would look like this:
 ```js
 const client = new Client({
    members: {
-    ignoreBots: true, // Doesn't cache any bots, but the "message" event WILL fire when bots send messages!
-    ignoreIDs: [], // Doesn't cache the IDs in the array. The "message" event still fires.
-    cache: true // Doesn't cache any members. The "message" event still fires.
+    ignoreBots: true, 
+    ignoreIDs: [], 
+    cache: true 
    },
    channels: {
-      ignoreVoice: true, // Doesn't cache any voice channels. The "voiceStateUpdate" event still fires!
-      ignoreCategories: true, // Doesn't cache any categories.
-      ignoreText: false // Completely ignores text channels, say bye to the message event
+      ignoreVoice: true, 
+      ignoreCategories: true, 
+      ignoreText: false 
    },
    users: {
-      ignoreBots: true, // Doesn't cache any bots, but the "message" event WILL fire when bots send messages!
-      ignoreIDs: ["356819274691510293"], // Doesn't cache the IDs in the array. The "message" event still fires.
+      ignoreBots: true, 
+      ignoreIDs: ["356819274691510293"],
    },
-   ignoreEmojis: true, // Doesn't cache all emojis.
-   ignorePresences: true // Doesn't cache all presences. 
+   ignoreEmojis: true, 
+   ignorePresences: true  
 });
 ```
 
@@ -96,15 +99,27 @@ const client = new Client({
 
 `limit` is how many pairs the collection can hold. If `id` is provided, the specified ID will never get deleted from the collection to make space for other objects. This was mainly added to never uncache the bot itself. 
 
-**Suggestion:** You can use `cacheType: Client.LimitedCollection.generate(2, 'yourBotId')` in the `members` option. That will cache only your bot and one extra member. This means that `message.member` will always be accessible
+## Message#rawMentions
+
+If you aren't caching any users/members/channels then it's likely that `message.mentions.users/members/channels` will be empty. Levitate.djs adds a `rawMentions` object which looks like this:
+
+```
+{
+   users: [],
+   roles: [],
+   channels: [],
+   everyone: true|false
+}
+```
+
+`users` contains an array of user objects, which themselves contain a `member` property. Roles contains an array of role IDs, since roles stay cached you can get the role object via `guild.roles.cache.get`. `channels` contains an array of the mentioned channels id.
 
 # Side Effects
 
 There will most likely be side effects. Some obvious side effects:
 
 - If `ignorePresences` is set to true, data in `GuildMember#presence` will likely be outdated, and may not even exist.
-- If `members.cache` is set to false, `Guild.owner` will always be null, `message.member` will always be null, along with other `GuildMember` properties.
-- If `members.ignoreBots` is set to true, messages which are sent by bots won't have the `member` property.
+- If `members.cache` is set to false, `Guild.owner` will always be null.
 - If `ignoreEmojis` is set to true, you won't be able to get any emoji objects from events or the caches, same with `ignorePresences`
 
 There are a lot more. If you have a basic text chat bot, I suggest using this configuration:

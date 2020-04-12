@@ -11,8 +11,8 @@ class UserManager extends BaseManager {
 
   add(data, cache = true, other) {
     if (this.client.levitateOptions.users.cache === false) cache = false;
-    if (this.client.levitateOptions.users.ignoreBots && data && data.bot && this.client.user.id !== data.id) cache = false;
-    if (this.client.levitateOptions.users.ignoreIDs instanceof Array && data && this.client.levitateOptions.users.ignoreIDs.includes(data.id)) cache = false;
+    else if (this.client.levitateOptions.users.ignoreBots && data && data.bot && this.client.user.id !== data.id) cache = false;
+    else if (this.client.levitateOptions.users.ignoreIDs instanceof Array && data && this.client.levitateOptions.users.ignoreIDs.includes(data.id)) cache = false;
     return super.add(data, cache, other);
   }
 
