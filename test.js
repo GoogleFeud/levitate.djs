@@ -23,6 +23,7 @@ ignoreReactions: true
 client.on("ready", () => console.log("I am ready!", client.guilds.cache.first().channels.cache.size))
 
 client.on("message", async (msg) => {
+      //if (msg.author.bot) return;
       if (msg.channel.type !== "dm") {
       console.log("Users cache:", client.users.cache.size);
       console.log("Members cache:", msg.guild.members.cache.size);
@@ -33,8 +34,7 @@ client.on("message", async (msg) => {
       console.log("Guild presences cache:", msg.guild.presences.cache.size);
       console.log("Permission check:", msg.member.roles.cache.has("527789717152989186"))
       }
-      console.log(msg.mentions);
-      msg.channel.send("TEST!");
+      console.log(await msg.channel.send("Some content!"));
 });
 
 

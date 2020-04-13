@@ -7,6 +7,7 @@ const GuildEmojiManager = require("../Managers/GuildEmojiManager.js");
 const PresenceManager = require("../Managers/PresenceManager.js");
 const PacketHandlers = require(require.resolve("discord.js").replace("index.js","client/websocket/handlers"));
 
+
 module.exports = {
     replaceManagers: function(options) {
 
@@ -21,12 +22,12 @@ module.exports = {
                     if (options.excludeProps instanceof Array) for (let prop of options.excludeProps) delete this[prop]; 
                 }
             }
-        });
+		});
 
 
         if (options.channels) Discord.Channel.create = function(client, data, guild) {
             let channel;
-	if(!data.guild_id && !guild) {
+     	if(!data.guild_id && !guild) {
 		if((data.recipients && data.type !== Discord.Constants.ChannelTypes.GROUP) || data.type === Discord.Constants.ChannelTypes.DM) {
 			const DMChannel = Discord.Structures.get('DMChannel');
 			channel = new DMChannel(client, data);

@@ -4,6 +4,7 @@ const Util = require("./Util/Util.js");
 const ChannelManager = require("./Managers/ChannelManager.js");
 const UserManager = require("./Managers/UserManager.js");
 
+const LimitedCollection = require("discord.js/src/util/LimitedCollection.js")
 
 class LevitateClient extends discord.Client {
     constructor(options = {}, djsOptions = {messageCacheMaxSize: 0}) {
@@ -43,18 +44,20 @@ class LevitateClient extends discord.Client {
         if (options.channels) this.channels = new ChannelManager(this);
         if (options.users) this.users = new UserManager(this);
 
-        if (options.channels && (options.channels.ignoreText || options.channels.cache === false)) {
-            Util.setAction(this, "MessageCreate", async (data) => {
-            if (options.users && options.users.ignoreBots && data.author.bot) return { data };
+        if ( options.channels && (options.channels.ignoreText || options.channels.cache === false) ) {
+            Util.setAction(this, "MessageCreate", (data) => {
             const client = this;
             let channel;
             let message;
             if (data.guild_id) {
-                const guild = this.guilds.cache.get(data.guild_id);
-                channel = this.channels.cache.get(data.channel_id);
+                const guild = client.guilds.cache.get(data.guild_id);
+                channel = client.channels.cache.get(data.channel_id);
                 if (!channel) {
                 let Channel = discord.Structures.get("TextChannel");
                 channel = new Channel(guild, {id: data.channel_id, type: 0});
+                }else {
+                    const existing = channel.messages.cache.get(data.id);
+                    if (existing) return { message: existing };
                 }
                 message = channel.messages.add(data);
                 message.mentions = Util.messageMentions(message, {
@@ -78,22 +81,21 @@ class LevitateClient extends discord.Client {
                     message.member.lastMessageID = data.id;
                     message.member.lastMessageChannelID = channel.id;
                }
-            }
-        else {
-            if (options.users && options.users.ignoreBots && data.author.bot) return { data }
-            const user = this.users.cache.get(data.author.id) || await this.users.fetch(data.author.id);
+            } else {
+            const user = this.users.cache.get(data.channel_id) || new discord.User(client, {id: data.channel_id});
             const DMChannel = discord.Structures.get("DMChannel");
             channel = new DMChannel(this, {recipients: [user], id: data.channel_id, type: 1});
             message = channel.messages.add(data);
-            message.mentions = Util.messageMentions(message, {
+           message.mentions = Util.messageMentions(message, {
                 users: data.mentions,
                 roles: data.mention_roles,
                 everyone: data.mention_everyone,
                 channels: []
             });
         }
+      if (options.users && options.users.ignoreBots && data.author.bot) return {message};
       client.emit("message", message);
-      return { message };
+      return {message};
     });
 }
     } 
