@@ -45,7 +45,9 @@ class LevitateClient extends discord.Client {
         if (options.users) this.users = new UserManager(this);
 
         if ( options.channels && (options.channels.ignoreText || options.channels.cache === false) ) {
+            let lastMSG;
             Util.setAction(this, "MessageCreate", (data) => {
+            if (lastMSG && lastMSG.id === data.id) return {message: lastMSG}
             const client = this;
             let channel;
             let message;
@@ -93,6 +95,7 @@ class LevitateClient extends discord.Client {
                 channels: []
             });
         }
+      lastMSG = message;
       if (options.users && options.users.ignoreBots && data.author.bot) return {message};
       client.emit("message", message);
       return {message};
