@@ -57,6 +57,7 @@ Extends `Discord.Client`.
 | options.ignorePresences |  `Boolean` | If presences should be cached |
 | options.ignoreReactions |  `Boolean` | If reactions should be cached + events from reactions should be received |
 | options.excludeProps |  `Array<String>` |  An array of property keys. These properties will be deleted from every guild. |
+| options.disabledEvents |  `Array<String>` |  An array of handlers/websocket events you want to disable. [list of handlers](https://github.com/discordjs/discord.js/tree/master/src/client/websocket/handlers) |
 | djsOptions | `Object` | Any options for discord.js |
 
 Creating a client would look like this:

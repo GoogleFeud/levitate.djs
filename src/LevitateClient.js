@@ -4,40 +4,9 @@ const Util = require("./Util/Util.js");
 const ChannelManager = require("./Managers/ChannelManager.js");
 const UserManager = require("./Managers/UserManager.js");
 
-const LimitedCollection = require("discord.js/src/util/LimitedCollection.js")
-
 class LevitateClient extends discord.Client {
     constructor(options = {}, djsOptions = {messageCacheMaxSize: 0}) {
-        Util.clearHandler("TYPING_START");
-        Util.clearHandler("GUILD_INTEGRATIONS_UPDATE")
-        if (options.ignoreEmojis) Util.clearHandler("GUILD_EMOJIS_UPDATE");
-        if (options.ignorePresences) Util.clearHandler("PRESENCE_UPDATE");
-        if (options.channels) {
-            if (options.channels.ignoreVoice || options.channels.cache === false) {
-                Util.clearHandler("VOICE_SERVER_UPDATE");
-                Util.clearHandler("VOICE_STATE_UPDATE");
-            }
-            if (options.channels.ignoreText || options.channels.cache === false) {
-                Util.clearHandler("CHANNEL_CREATE");
-                Util.clearHandler("CHANNEL_DELETE");
-                Util.clearHandler("CHANNEL_PINS_UPDATE");
-                Util.clearHandler("CHANNEL_UPDATE");
-            }
-        }
-        if (options.members && options.members.cache === false) {
-             Util.clearHandler("GUILD_MEMBER_ADD");
-             Util.clearHandler("GUILD_MEMBER_REMOVE");
-             Util.clearHandler("GUILD_MEMBER_UPDATE");
-             Util.clearHandler("GUILD_BAN_ADD");
-             Util.clearHandler("GUILD_BAN_REMOVE");
-        }
-        if (options.users && options.users.cache === false) Util.clearHandler("USER_UPDATE");
-        if (options.ignoreReactions) {
-            Util.clearHandler("MESSAGE_REACTION_ADD");
-            Util.clearHandler("MESSAGE_REACTION_REMOVE")
-            Util.clearHandler("MESSAGE_REACTION_REMOVE_ALL");
-            Util.clearHandler("MESSAGE_REACTION_REMOVE_EMOJI");
-        }
+        if (options.disabledEvents instanceof Array) for (let ev of options.disabledEvents) Util.clearHandler(ev);
         Util.replaceManagers(options);
         super(djsOptions);
         this.levitateOptions = options;
