@@ -123,22 +123,27 @@ There will most likely be side effects. Some obvious side effects:
 - If `members.cache` is set to false, `Guild.owner` will always be null.
 - If `ignoreEmojis` is set to true, you won't be able to get any emoji objects from events or the caches, same with `ignorePresences`
 
-There are a lot more. If you have a basic text chat bot, I suggest using this configuration:
+There are a lot more.
+
+**This setup has been well tested and it works just fine:**
 
 ```js
-const client = new Client({
-   members: {
-    ignoreBots: true, // Set this to true if your bot doesn't interact with other bots, doesn't use their information. Don't use this if you have a "server info" command or similar
-   },
-   channels: {
-      ignoreVoice: true, // If your bot only uses text channels, it should ignore voice ones
-      ignoreCategories: true, // If you bot doesn't take advantage of the `channel.parent` property, keep this to true
-   },
-   users: {
-      ignoreBots: true, // Set this to true if your bot doesn't interact with other bots, doesn't use their information. Don't use this if you have a "server info" command or similar
-   },
-   ignoreEmojis: true, // Leave this to true if your bot doesn't use any custom emojis / doesn't have any custom emojis related statistics.
-   ignorePresences: true,
-   ignoreProps: ["afkChannelID", ".applicationID", "banner", "description", "embedChannelID", "embedEnabled", "memberCount", "features", "nameAcronym", "premiumSubscriptionCount", "systemChannelID", "vanityURLCode", "verificationLevel", "verified", "voice", "voiceStates", "widgetChannelID", "region", "defaultMessageNotifications"]
-});
+{
+          channels: {
+                cache: false
+          },
+          users: {
+              cache: false,
+              ignoreBots: true
+          },
+          members: {
+             cache: false,
+          },
+          ignoreEmojis: true, 
+          ignorePresences: true,
+          ignoreReactions: true,
+          disabledEvents: ["CHANNEL_CREATE", "CHANNEL_PINS_UPDATE", "GUILD_BAN_ADD", "GUILD_BAN_REMOVE", "GUILD_EMOJIS_UPDATE", "GUILD_INTEGRATIONS_UPDATE", "GUILD_MEMBER_ADD", "GUILD_MEMBER_REMOVE", "GUILD_MEMBER_UPDATE", "INVITE_CREATE", "INVITE_DELETE", "MESSAGE_REACTION_ADD", "MESSAGE_REACTION_REMOVE", "MESSAGE_REACTION_REMOVE_ALL", "MESSAGE_REACTION_REMOVE_EMOJI", "MESSAGE_UPDATE", "PRESENCE_UPDATE", "TYPING_START", "USER_UPDATE", "VOICE_SERVER_UPDATE", "VOICE_STATE_UPDATE"]
+        }, {
+            messageCacheMaxSize: 0
+         }
 ```
